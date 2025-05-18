@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import { LOGO } from "../utils/imagePaths";
+import { ThemeProvider } from "next-themes";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -25,9 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.className} light`}>
+    <html lang="en" className={`${inter.className} `} suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`}>
-        <main>{children}</main>
+        <ThemeProvider
+          attribute={"class"}
+          enableSystem={true}
+          defaultTheme="system"
+        >
+          <main>{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );

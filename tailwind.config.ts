@@ -7,8 +7,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#1D4ED8",
-        secondary: "#9333EA",
+        borderColor: "#D9D9D9",
+        sunColor: "#FFDC00",
+        moonColor: "#304097",
       },
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
