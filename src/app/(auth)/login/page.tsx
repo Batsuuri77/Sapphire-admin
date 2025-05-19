@@ -57,7 +57,7 @@ const LogIn = () => {
               )}
             </button>
             <div className="flex items-center justify-end w-full mt-1">
-              {/* <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2">
                 <Checkbox id="remember_me" className="border-primary-border" />
                 <label
                   htmlFor="remember_me"
@@ -65,7 +65,7 @@ const LogIn = () => {
                 >
                   Remember me
                 </label>
-              </div> */}
+              </div>
               <a
                 href="#"
                 className="text-xs text-blue-500 italic hover:underline"
