@@ -1,6 +1,8 @@
 "use client";
 import InitialHeader from "@/components/layout/InitialHeader";
 import React from "react";
+import Image from "next/image";
+import { BG } from "@/utils/imagePaths";
 
 export default function AuthLayout({
   children,
@@ -9,9 +11,20 @@ export default function AuthLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-background text-foreground font-sans antialiased">
+      <body className="relative min-h-screen bg-backgroundAuth text-foreground font-sans antialiased overflow-hidden">
+        <div className="absolute inset-0 w-full h-full -z-10">
+          <Image
+            src={BG.bg}
+            alt="Background"
+            fill
+            priority
+            className="object-contain [object-position:center_90%] h-screen w-screen"
+          />
+        </div>
         <InitialHeader />
-        <div className="pt-20 px-4 md:px-8 max-w-2xl mx-auto">{children}</div>
+        <main className=" z-10 px-4 w-full max-w-5xl mx-auto">
+          <div>{children}</div>
+        </main>
       </body>
     </html>
   );

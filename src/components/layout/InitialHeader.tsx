@@ -10,7 +10,7 @@ import useIsDarkMode from "@/hooks/useIsDarkMode";
 const InitialHeader = () => {
   const isDark = useIsDarkMode();
   return (
-    <div className="px-60 py-4 flex justify-between items-center z-0 x-0">
+    <div className="px-60 py-4 flex justify-between items-center absolute w-full z-0 x-0 bg-white dark:bg-[#161616]">
       <Image
         src={isDark ? LOGO.dark : LOGO.light}
         alt={"Logo light"}
