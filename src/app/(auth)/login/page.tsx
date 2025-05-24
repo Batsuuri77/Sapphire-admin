@@ -3,9 +3,19 @@
 import React, { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import DefaultButton from "@/components/buttons/DefaultButton";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/utils/routes";
 
 const LogIn = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const router = useRouter();
+
+  const handleSignUp = () => {
+    router.push(ROUTES.SIGNUP);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-8 w-full">
       <div className="flex flex-col items-center justify-center gap-4 w-full">
@@ -14,7 +24,10 @@ const LogIn = () => {
           Please enter your details.
         </p>
       </div>
-      <div className="flex flex-col items-center w-1/2 justify-center gap-10  p-20 bg-white rounded-lg shadow-md dark:bg-secondary-dark ">
+      <div
+        className="flex flex-col items-center w-full sm:w-3/4 md:w-2/3 lg:w-1/2
+ justify-center gap-8 px-20 py-10 bg-white rounded-lg shadow-md dark:bg-secondary-dark "
+      >
         <div className="flex flex-col items-center justify-center gap-4">
           <h1 className="text-3xl font-semibold text-center  text-black">
             Log in
@@ -56,7 +69,7 @@ const LogIn = () => {
                 <EyeIcon className="size-4" />
               )}
             </button>
-            <div className="flex items-center justify-end w-full mt-1">
+            <div className="flex items-center justify-between w-full mt-1">
               <div className="flex items-center space-x-2">
                 <Checkbox id="remember_me" className="border-primary-border" />
                 <label
@@ -75,13 +88,20 @@ const LogIn = () => {
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="w-full p-2 text-white rounded-md bg-primary-button hover:bg-hover-button transition duration-200"
-          >
-            Log in
-          </button>
+          <DefaultButton type={"submit"} text={"Log in"} />
         </form>
+        <div className="flex flex-col w-full items-center justify-between gap-8 text-sm text-muted-foreground">
+          <div className="flex justify-between gap-2 w-full items-center">
+            <span className="w-full border-t border-primary-border"></span>
+            or
+            <span className="w-full border-t border-primary-border"></span>
+          </div>
+          <DefaultButton
+            type={"button"}
+            text={"Sign up"}
+            onClick={handleSignUp}
+          />
+        </div>
       </div>
     </div>
   );

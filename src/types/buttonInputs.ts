@@ -5,11 +5,12 @@ export interface ButtonInputs
   icon?: string;
   iconPosition?: "left" | "right";
   iconSize?: number;
+  showIcon?: boolean;
   iconWidth?: number;
   iconHeight?: number;
   iconClassName?: string;
   iconAlt?: string;
-  type?: "button" | "submit" | "reset";
+  type: "button" | "submit" | "reset";
   disabled?: boolean;
   loading?: boolean;
   loadingText?: string;
@@ -18,4 +19,5 @@ export interface ButtonInputs
   size?: "small" | "medium" | "large";
   children?: React.ReactNode;
   onClick?: () => void;
+  href?: string;
 }

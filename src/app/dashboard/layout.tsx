@@ -4,13 +4,13 @@ import React from "react";
 import Image from "next/image";
 import { BG } from "@/utils/imagePaths";
 
-export default function AuthLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body className="relative min-h-screen bg-backgroundAuth text-foreground font-sans antialiased overflow-hidden">
         <div className="absolute inset-0 w-full h-full -z-10">
           <Image

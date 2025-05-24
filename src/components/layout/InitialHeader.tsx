@@ -25,9 +25,19 @@ const InitialHeader = () => {
         <DownloadButton
           icon={LOGO.apple}
           text={"Download"}
-          iconClassName="dark:stroke-white"
+          iconWidth={20}
+          iconHeight={20}
+          iconAlt="apple"
+          type={"button"}
         />
-        <DownloadButton icon={LOGO.playstore} text={"Download"} />
+        <DownloadButton
+          icon={LOGO.playstore}
+          iconAlt="playstore"
+          iconWidth={20}
+          iconHeight={20}
+          text={"Download"}
+          type={"button"}
+        />
       </div>
     </div>
   );
