@@ -1,5 +1,5 @@
 export interface AdminFormData {
-  profileImage?: string[]; // URL for the profile image
+  profilePic?: string[];
   firstName: string;
   lastName: string;
   email: string;
@@ -7,6 +7,13 @@ export interface AdminFormData {
   password: string;
   phoneNumber: string;
   mobileNumber?: string;
+  fullAddress: string;
+  country: string;
+  state: string;
+  city: string;
+  strAddress: string;
+  zipCode: string;
+  role: "super_admin" | "admin";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,4 +31,5 @@ export interface AdminSignupData {
   userName: string;
   password: string;
   confirmPassword: string;
+  createdAt: Date;
 }

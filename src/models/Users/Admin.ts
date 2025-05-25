@@ -1,32 +1,45 @@
 import mongoose from "mongoose";
 
 export interface AdminRole {
-  enum: "super_admin" | "merchant_admin";
-  default: "merchant_admin";
+  enum: "super_admin" | "admin";
+  default: "admin";
 }
 
 const AdminSchema = new mongoose.Schema(
   {
-    profileImage: { type: [String] },
+    profilePic: {
+      type: [String],
+      error: "Profile picture is optional but should be an array of strings.",
+    },
     firstName: { type: String },
     lastName: { type: String },
-    email: { type: String, unique: true },
-    userName: { type: String, unique: true },
-    password: { type: String, required: true },
+    userName: { type: String, unique: true, error: "Username must be unique." },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+      error: "Email is required.",
+    },
+    password: { type: String, required: true, error: "Password is required." },
     phoneNumber: { type: String },
     mobileNumber: { type: String },
+    fullAddress: { type: String },
+    country: { type: String },
+    state: { type: String },
+    city: { type: String },
+    strAddress: { type: String },
+    zipCode: { type: String },
     role: {
       type: String,
-      enum: ["super_admin", "merchant_admin"],
-      default: "merchant_admin",
+      enum: ["super_admin", "admin"],
+      default: "admin",
     },
-    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
-    merchants: [{ type: mongoose.Schema.Types.ObjectId, ref: "Merchant" }],
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Admin || mongoose.model("Adming", AdminSchema);
+export default mongoose.models.Admin ||
+  mongoose.model("Admin", AdminSchema, "admins");
 export type Admin = mongoose.InferSchemaType<typeof AdminSchema>;
 export type AdminDocument = mongoose.Document<Admin>;
 export type AdminModel = mongoose.Model<AdminDocument> & {
