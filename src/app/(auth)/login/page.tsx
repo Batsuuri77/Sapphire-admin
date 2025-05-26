@@ -9,11 +9,37 @@ import { ROUTES } from "@/utils/routes";
 
 const LogIn = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [adminData, setAdminData] = useState({
+    email: "",
+    password: "",
+  });
 
   const router = useRouter();
 
   const handleSignUp = () => {
     router.push(ROUTES.SIGNUP);
+  };
+
+  const handleLogin = async () => {
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(adminData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Something went wrong");
+
+      console.log("Admin logged in:", data);
+      // Redirect to dashboard or home page
+      router.push(ROUTES.DASHBOARD);
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
   };
 
   return (
@@ -45,6 +71,13 @@ const LogIn = () => {
             <input
               id="email"
               type="email"
+              value={adminData.email}
+              onChange={(e) =>
+                setAdminData({
+                  ...adminData,
+                  email: e.target.value,
+                })
+              }
               className="w-full p-2 border border-primary-border rounded-md bg-white"
             />
           </div>
@@ -55,6 +88,13 @@ const LogIn = () => {
             <input
               id="password"
               type={showPassword ? "text" : "password"}
+              value={adminData.password}
+              onChange={(e) =>
+                setAdminData({
+                  ...adminData,
+                  password: e.target.value,
+                })
+              }
               className="w-full p-2 border border-primary-border rounded-md bg-white"
             />
             {/* Eye icon */}
@@ -88,7 +128,11 @@ const LogIn = () => {
             </div>
           </div>
 
-          <DefaultButton type={"submit"} text={"Log in"} />
+          <DefaultButton
+            type={"submit"}
+            text={"Log in"}
+            onClick={handleLogin}
+          />
         </form>
         <div className="flex flex-col w-full items-center justify-between gap-8 text-sm text-muted-foreground">
           <div className="flex justify-between gap-2 w-full items-center">
