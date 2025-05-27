@@ -1,10 +1,10 @@
 "use client";
-
 import React, { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import DefaultButton from "@/components/buttons/DefaultButton";
-import { useRouter } from "next/navigation";
 import { ROUTES } from "@/utils/routes";
 
 const LogIn = () => {
@@ -20,25 +20,40 @@ const LogIn = () => {
     router.push(ROUTES.SIGNUP);
   };
 
-  const handleLogin = async () => {
-    try {
-      const res = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(adminData),
-      });
+  // const handleLogin = async () => {
+  //   try {
+  //     const res = await fetch("/api/admin/login", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(adminData),
+  //     });
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      if (!res.ok) throw new Error(data.error || "Something went wrong");
+  //     if (!res.ok) throw new Error(data.error || "Something went wrong");
 
-      console.log("Admin logged in:", data);
-      // Redirect to dashboard or home page
+  //     console.log("Admin logged in:", data);
+  //     // Redirect to dashboard or home page
+  //     router.push(ROUTES.DASHBOARD);
+  //   } catch (error) {
+  //     console.error("Unexpected error:", error);
+  //   }
+  // };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: adminData.email,
+      password: adminData.password,
+    });
+
+    if (res?.ok) {
       router.push(ROUTES.DASHBOARD);
-    } catch (error) {
-      console.error("Unexpected error:", error);
+    } else {
+      console.error("Login failed", res?.error);
     }
   };
 
@@ -63,7 +78,10 @@ const LogIn = () => {
           </p>
         </div>
 
-        <form className="flex flex-col items-center justify-center gap-4 w-full">
+        <form
+          onSubmit={handleLogin}
+          className="flex flex-col items-center justify-center gap-4 w-full"
+        >
           <div className="flex flex-col items-start justify-start w-full gap-1">
             <label htmlFor="Email" className="text-sm   text-black">
               Email
@@ -128,11 +146,7 @@ const LogIn = () => {
             </div>
           </div>
 
-          <DefaultButton
-            type={"submit"}
-            text={"Log in"}
-            onClick={handleLogin}
-          />
+          <DefaultButton type={"submit"} text={"Log in"} />
         </form>
         <div className="flex flex-col w-full items-center justify-between gap-8 text-sm text-muted-foreground">
           <div className="flex justify-between gap-2 w-full items-center">
