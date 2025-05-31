@@ -20,28 +20,6 @@ const LogIn = () => {
     router.push(ROUTES.SIGNUP);
   };
 
-  // const handleLogin = async () => {
-  //   try {
-  //     const res = await fetch("/api/admin/login", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(adminData),
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (!res.ok) throw new Error(data.error || "Something went wrong");
-
-  //     console.log("Admin logged in:", data);
-  //     // Redirect to dashboard or home page
-  //     router.push(ROUTES.DASHBOARD);
-  //   } catch (error) {
-  //     console.error("Unexpected error:", error);
-  //   }
-  // };
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await signIn("credentials", {
