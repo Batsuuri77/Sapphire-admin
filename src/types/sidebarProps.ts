@@ -1,11 +1,14 @@
+import { ComponentType, SVGProps } from "react";
+
 export interface SidebarProps {
   isOpen: boolean;
-  toggleSidebar: () => void; // Function to toggle sidebar visibility
-  closeSidebar: () => void; // Function to close the sidebar
-  openSidebar: () => void; // Function to open the sidebar
+  isCollapsed: boolean;
+  toggleSidebar: () => void;
+  closeSidebar: () => void;
+  toggleCollapse: () => void;
   navLinks: {
     links: { name: string; href: string }[];
-    icons: { name: string; atr: React.JSX.Element }[];
+    icons: { name: string; atr: ComponentType<SVGProps<SVGSVGElement>> }[];
   };
-  sideBarClassName?: string; // Optional class name for the sidebar
+  sideBarClassName?: string;
 }

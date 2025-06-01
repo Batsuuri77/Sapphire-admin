@@ -57,7 +57,7 @@ const DefaultButton: React.FC<ButtonInputs> = ({
         type={type}
         onClick={onClick}
         disabled={disabled || loading}
-        className={`w-full py-3 text-white text-sm rounded-md bg-primary-button hover:bg-hover-button transition duration-200 
+        className={`w-full py-3 text-white text-sm cursor-pointer rounded-md bg-primary-button hover:bg-hover-button transition duration-200 
         ${variantStyles[variant]} ${sizeStyles[size]} ${additionalClassName}`}
         {...props}
       >

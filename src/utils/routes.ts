@@ -20,3 +20,7 @@ export const SIDEBAR_ROUTES = {
   SETTINGS: "/dashboard/settings",
   HELP: "/dashboard/help",
 };
+
+export const PRODUCTS_ROUTES = {
+  ADD_PRODUCT: "/dashboard/products/addProduct",
+};
