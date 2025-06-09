@@ -1,7 +1,11 @@
 import React from "react";
 
 const AddProduct = () => {
-  return <div>Add Product</div>;
+  return (
+    <div>
+      <form action="submit"></form>
+    </div>
+  );
 };
 
 export default AddProduct;

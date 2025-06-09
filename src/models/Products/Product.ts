@@ -13,8 +13,8 @@ const ProductSchema = new mongoose.Schema(
     district: { type: String, required: true },
     latitude: { type: String, required: true },
     longitude: { type: String, required: true },
-
     basePrice: { type: Number, required: true },
+
     options: {
       sizes: [
         {
@@ -37,6 +37,7 @@ const ProductSchema = new mongoose.Schema(
     },
 
     ratings: { type: Number, default: 0 },
+
     reviews: [
       {
         userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -45,6 +46,7 @@ const ProductSchema = new mongoose.Schema(
         createdAt: { type: Date, default: Date.now },
       },
     ],
+
     isActive: { type: Boolean, default: true },
     isSale: { type: Boolean, default: false },
     salePrice: { type: Number },
