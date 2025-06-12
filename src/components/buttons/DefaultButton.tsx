@@ -34,6 +34,7 @@ const DefaultButton: React.FC<ButtonInputs> = ({
   disabled = false,
   type = "button",
   onClick,
+  value,
   children,
   ...props
 }) => {
@@ -55,7 +56,7 @@ const DefaultButton: React.FC<ButtonInputs> = ({
     <div className="w-full">
       <button
         type={type}
-        onClick={onClick}
+        onClick={() => onClick?.(value)}
         disabled={disabled || loading}
         className={`w-full py-3 text-white text-sm cursor-pointer rounded-md bg-primary-button hover:bg-hover-button transition duration-200 
         ${variantStyles[variant]} ${sizeStyles[size]} ${additionalClassName}`}

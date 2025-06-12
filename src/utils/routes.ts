@@ -23,4 +23,5 @@ export const SIDEBAR_ROUTES = {
 
 export const PRODUCTS_ROUTES = {
   ADD_PRODUCT: "/dashboard/products/addProduct",
+  ADD_CATEGORY: "/dashboard/products/category",
 };

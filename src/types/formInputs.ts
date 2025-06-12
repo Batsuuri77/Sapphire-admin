@@ -97,7 +97,15 @@ export interface FormInputProps
 }
 
 export interface FormFieldConfig {
-  type: "text" | "email" | "password" | "image" | "select" | "checkbox";
+  type:
+    | "text"
+    | "email"
+    | "password"
+    | "image"
+    | "select"
+    | "checkbox"
+    | "textarea";
+  textAreaRows?: number; // For textarea inputs, number of rows
   label: string;
   id: string;
   placeholder?: string;
@@ -109,4 +117,5 @@ export interface FormFieldConfig {
   className?: string; // Optional class names for the field
   boxClassName?: string; // Optional class names for the input box
   onChange?: (value: string | boolean) => void; // Change handler for the field
+  onFieldChange?: (value: string | boolean) => void; // Change handler for the field
 }

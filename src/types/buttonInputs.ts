@@ -1,5 +1,5 @@
 export interface ButtonInputs
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> {
   title?: string;
   text: string;
   icon?: string;
@@ -18,6 +18,7 @@ export interface ButtonInputs
   variant?: "primary" | "secondary" | "tertiary" | "ghost";
   size?: "small" | "medium" | "large";
   children?: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (value?: string) => void;
+  value?: string;
   href?: string;
 }
