@@ -11,6 +11,7 @@ const AdminSchema = new mongoose.Schema(
       type: [String],
       error: "Profile picture is optional but should be an array of strings.",
     },
+    adminId: { type: String, required: true, unique: true },
     firstName: { type: String },
     lastName: { type: String },
     userName: { type: String, unique: true, error: "Username must be unique." },

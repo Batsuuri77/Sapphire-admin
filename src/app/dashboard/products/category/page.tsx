@@ -1,11 +1,17 @@
 "use client";
 import UniversalForm from "@/components/forms/UniversalForm";
 import { FormFieldConfig } from "@/types/formInputs";
+import { POSTROUTES } from "@/utils/apiRoutes";
 import React, { useState } from "react";
 import slugify from "slugify";
 
 const Category = () => {
-  const [formValues, setFormValues] = useState<Record<string, unknown>>({});
+  const [formValues, setFormValues] = useState<Record<string, unknown>>({
+    categoryname: "",
+    categoryslug: "",
+    categoryimage: "",
+    categorydescription: "",
+  });
 
   const categoryFormFields: FormFieldConfig[] = [
     {
@@ -17,20 +23,21 @@ const Category = () => {
     {
       type: "text",
       label: "Slug",
-      id: "slug",
+      id: "categorySlug",
       disabled: true,
       required: true,
     },
     {
       type: "image",
-      label: "Category images",
-      id: "categoryImages",
+      label: "Category image",
+      id: "categoryImage",
+      multiple: false,
       required: true,
     },
     {
       type: "textarea",
       label: "Description",
-      id: "description",
+      id: "categoryDescription",
       required: true,
     },
   ];
@@ -41,10 +48,34 @@ const Category = () => {
       setFormValues((prev) => ({
         ...prev,
         [fieldId]: value,
-        slug: generated, // ✅ Update slug
+        categorySlug: generated,
       }));
     } else {
       setFormValues((prev) => ({ ...prev, [fieldId]: value }));
+    }
+  };
+
+  const handleSubmit = async () => {
+    const body = {
+      categoryname: formValues.categoryName,
+      categoryslug: formValues.categorySlug,
+      categoryimage: formValues.categoryimage,
+      categorydescription: formValues.categoryDescription,
+    };
+
+    try {
+      const res = await fetch(POSTROUTES.category, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong");
+    } catch (error) {
+      console.log("Form submitting error: ", error);
     }
   };
 
@@ -59,7 +90,7 @@ const Category = () => {
             formTitle="Add New Category"
             formDescription="Fill out the details below to add a new category."
             formFields={categoryFormFields}
-            onSubmit={(data) => console.log("Submitted:", data)}
+            onSubmit={handleSubmit}
             onFieldChange={handleFieldChange}
             initialValues={formValues}
           />

@@ -20,7 +20,7 @@ interface UniversalFormProps {
   formButtonDisabled?: boolean;
   formCoverImage?: string;
   formCoverImageClassName?: string;
-  initialValues?: Record<string, any>;
+  initialValues?: Record<string, unknown>;
 }
 
 const UniversalForm: React.FC<UniversalFormProps> = ({
@@ -178,37 +178,61 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
             ) : field.type === "image" ? (
               <div className="mt-1 w-full">
                 <div className="flex flex-wrap gap-2">
-                  {(formValues[field.id] as string[] | undefined)?.map(
-                    (img, i) => (
-                      <div
-                        key={i}
-                        className="relative w-50 h-50 border rounded overflow-hidden"
-                      >
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setFormValues((prev) => {
-                              const updated = [
-                                ...((prev[field.id] as string[]) || []),
-                              ];
-                              updated.splice(i, 1);
-                              return { ...prev, [field.id]: updated };
-                            });
-                          }}
-                          className="absolute top-1 right-1 p-0.5 text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer"
+                  {field.multiple
+                    ? Array.isArray(formValues[field.id]) &&
+                      (formValues[field.id] as string[]).map((imgUrl, i) => (
+                        <div
+                          key={imgUrl + i}
+                          className="relative w-50 h-50 border rounded overflow-hidden"
                         >
-                          <XMarkIcon className="w-5 h-5" />
-                        </button>
-                        <Image
-                          src={img}
-                          alt={`preview-${i}`}
-                          className="object-cover w-full h-full"
-                          width={50}
-                          height={50}
-                        />
-                      </div>
-                    )
-                  )}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFormValues((prev) => {
+                                const updated = [
+                                  ...((prev[field.id] as string[]) || []),
+                                ];
+                                updated.splice(i, 1);
+                                return { ...prev, [field.id]: updated };
+                              });
+                            }}
+                            className="absolute top-1 right-1 p-0.5 text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer"
+                          >
+                            <XMarkIcon className="w-5 h-5" />
+                          </button>
+                          <Image
+                            src={imgUrl}
+                            alt={`preview`}
+                            className="object-cover w-full h-full"
+                            width={50}
+                            height={50}
+                          />
+                        </div>
+                      ))
+                    : typeof formValues[field.id] === "string" &&
+                      formValues[field.id] !== "" && (
+                        <div className="relative w-50 h-50 border rounded overflow-hidden">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFormValues((prev) => ({
+                                ...prev,
+                                [field.id]: undefined,
+                              }));
+                            }}
+                            className="absolute top-1 right-1 p-0.5 text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer"
+                          >
+                            <XMarkIcon className="w-5 h-5" />
+                          </button>
+                          <Image
+                            src={formValues[field.id] as string}
+                            alt={`preview`}
+                            className="object-cover w-full h-full"
+                            width={50}
+                            height={50}
+                          />
+                        </div>
+                      )}
 
                   <label
                     htmlFor={`upload-${field.id}`}
@@ -220,7 +244,7 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
                     id={`upload-${field.id}`}
                     type="file"
                     accept="image/*"
-                    multiple
+                    multiple={field.multiple}
                     className="hidden"
                     onChange={(e) => {
                       const files = e.target.files;
@@ -230,10 +254,12 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
                         );
                         setFormValues((prev) => ({
                           ...prev,
-                          [field.id]: [
-                            ...((prev[field.id] as string[]) || []),
-                            ...fileURLs,
-                          ],
+                          [field.id]: field.multiple
+                            ? [
+                                ...((prev[field.id] as string[]) || []),
+                                ...fileURLs,
+                              ]
+                            : fileURLs[0],
                         }));
                       }
                     }}

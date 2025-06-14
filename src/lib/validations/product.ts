@@ -1,23 +1,30 @@
 import { z } from "zod";
 
 export const productSchema = z.object({
-  id: z.string().min(1, "ID is required"),
-  images: z.array(z.string().url("Must be a valid image URL")).optional(),
+  productid: z.string().min(1, "ID is required"),
+  productimages: z
+    .array(z.string().url("Must be a valid image URL"))
+    .optional(),
 
-  parentCategory: z.string().min(1, "Parent category is required"),
-  subCategory: z.string().min(1, "Sub category is required"),
-  name: z.string().min(1, "Product name is required"),
-  description: z.string().min(1, "Description is required"),
+  productname: z.string().min(1, "Product name is required"),
+  productslug: z
+    .string()
+    .min(1, { message: "Product slug is required" })
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+      message:
+        "Slug must be lowercase and can only contain letters, numbers, and hyphens",
+    }),
+  productdescription: z.string().min(1, "Description is required"),
 
-  stock: z.number().min(0, "Stock cannot be negative"),
+  productstock: z.number().min(0, "Stock cannot be negative"),
 
-  city: z.string().min(1, "City is required"),
-  district: z.string().min(1, "District is required"),
-  latitude: z.string().min(1, "Latitude is required"),
-  longitude: z.string().min(1, "Longitude is required"),
-  basePrice: z.number().min(0, "Base price must be >= 0"),
+  productcity: z.string().min(1, "City is required"),
+  productdistrict: z.string().min(1, "District is required"),
+  productlatitude: z.string().min(1, "Latitude is required"),
+  productlongitude: z.string().min(1, "Longitude is required"),
+  productbasePrice: z.number().min(0, "Base price must be >= 0"),
 
-  options: z.object({
+  productoptions: z.object({
     sizes: z
       .array(
         z.object({
@@ -58,6 +65,9 @@ export const productSchema = z.object({
       })
     )
     .optional(),
+
+  categoryid: z.string().min(1, "Category ID is required"),
+  subcategoryid: z.string().min(1, "Subcategory ID is required"),
 
   isActive: z.boolean().optional(),
   isSale: z.boolean().optional(),

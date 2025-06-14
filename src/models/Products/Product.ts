@@ -1,21 +1,19 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const ProductSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true, unique: true },
-    images: { type: [String], required: false },
-    parentCategory: { type: String, required: true },
-    subCategory: { type: String, required: true },
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    stock: { type: Number, required: true },
-    city: { type: String, required: true },
-    district: { type: String, required: true },
-    latitude: { type: String, required: true },
-    longitude: { type: String, required: true },
-    basePrice: { type: Number, required: true },
+    productId: { type: String, required: true, unique: true },
+    productImages: { type: [String], required: false },
+    productName: { type: String, required: true },
+    productDescription: { type: String, required: true },
+    productStock: { type: Number, required: true },
+    productCity: { type: String, required: true },
+    productDistrict: { type: String, required: true },
+    productLatitude: { type: String, required: true },
+    productLongitude: { type: String, required: true },
+    productBasePrice: { type: Number, required: true },
 
-    options: {
+    productOptions: {
       sizes: [
         {
           name: { type: String, required: true },
@@ -46,6 +44,17 @@ const ProductSchema = new mongoose.Schema(
         createdAt: { type: Date, default: Date.now },
       },
     ],
+
+    categoryId: {
+      type: Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    subCategoryId: {
+      type: Types.ObjectId,
+      ref: "SubCategory",
+      required: true,
+    },
 
     isActive: { type: Boolean, default: true },
     isSale: { type: Boolean, default: false },

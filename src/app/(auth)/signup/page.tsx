@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import DefaultButton from "@/components/buttons/DefaultButton";
 import { ROUTES } from "@/utils/routes";
+import { POSTROUTES } from "@/utils/apiRoutes";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,7 +18,7 @@ const SignUp = () => {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch("/api/admin", {
+      const res = await fetch(POSTROUTES.adminSignup, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

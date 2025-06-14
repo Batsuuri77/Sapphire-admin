@@ -97,6 +97,8 @@ export interface FormInputProps
 }
 
 export interface FormFieldConfig {
+  id: string;
+  label: string;
   type:
     | "text"
     | "email"
@@ -106,8 +108,6 @@ export interface FormFieldConfig {
     | "checkbox"
     | "textarea";
   textAreaRows?: number; // For textarea inputs, number of rows
-  label: string;
-  id: string;
   placeholder?: string;
   required?: boolean;
   options?: { value: string; label: string }[]; // For select inputs
@@ -116,6 +116,7 @@ export interface FormFieldConfig {
   value?: string | boolean; // Value for the field, can be string or boolean for checkbox
   className?: string; // Optional class names for the field
   boxClassName?: string; // Optional class names for the input box
+  multiple?: boolean; // Whether the field supports multiple images
   onChange?: (value: string | boolean) => void; // Change handler for the field
   onFieldChange?: (value: string | boolean) => void; // Change handler for the field
 }

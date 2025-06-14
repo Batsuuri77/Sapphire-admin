@@ -9,3 +9,12 @@ export const LOGO = {
 export const BG = {
   bg: "/Images/background.png",
 };
+
+export const PRODUCTS = {
+  khuis: "/Images/products/frame/lakes/khuis.png",
+};
+
+export const PACKAGES = {
+  package1: "/Images/products/package/paper.png",
+  package2: "/Images/products/package/wood.png",
+};
