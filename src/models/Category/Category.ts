@@ -10,8 +10,9 @@ const CategorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.CategorySchema ||
-  mongoose.model("Category", CategorySchema, "Categories");
+const Category =
+  mongoose.models.Category || mongoose.model("Category", CategorySchema);
+export default Category;
 export type Category = mongoose.InferSchemaType<typeof CategorySchema>;
 export type CategoryDocument = mongoose.Document<Category>;
 export type CategoryModel = mongoose.Model<CategoryDocument> & {

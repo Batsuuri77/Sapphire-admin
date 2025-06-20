@@ -7,11 +7,13 @@ import slugify from "slugify";
 
 const Category = () => {
   const [formValues, setFormValues] = useState<Record<string, unknown>>({
-    categoryname: "",
-    categoryslug: "",
-    categoryimage: "",
-    categorydescription: "",
+    categoryName: "",
+    categorySlug: "",
+    categoryImage: "",
+    categoryDescription: "",
   });
+
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const categoryFormFields: FormFieldConfig[] = [
     {
@@ -57,10 +59,10 @@ const Category = () => {
 
   const handleSubmit = async () => {
     const body = {
-      categoryname: formValues.categoryName,
-      categoryslug: formValues.categorySlug,
-      categoryimage: formValues.categoryimage,
-      categorydescription: formValues.categoryDescription,
+      categoryName: formValues.categoryName,
+      categorySlug: formValues.categorySlug,
+      categoryImage: formValues.categoryImage,
+      categoryDescription: formValues.categoryDescription,
     };
 
     try {
@@ -74,16 +76,30 @@ const Category = () => {
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
+      setSuccessMessage("Category has been created successfully!");
+      setFormValues({
+        categoryName: "",
+        categorySlug: "",
+        categoryImage: "",
+        categoryDescription: "",
+      });
+
+      setTimeout(() => setSuccessMessage(null), 3000);
     } catch (error) {
       console.log("Form submitting error: ", error);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-between w-full h-full bg-white ">
+    <div className="flex flex-col items-center justify-between w-full h-full bg-white relative">
       <div className="flex items-center justify-start w-full px-6 py-4">
         <h1 className="text-xl font-semibold text-gray-800">Categories</h1>
       </div>
+      {successMessage && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-300 font-medium">
+          {successMessage}
+        </div>
+      )}
       <div className="flex flex-row items-center justify-between w-full ">
         <div className="w-full max-w-xl">
           <UniversalForm

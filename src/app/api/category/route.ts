@@ -3,7 +3,7 @@ import { categorySchema } from "@/lib/validations/category";
 import Category from "@/models/Category/Category";
 import { NextResponse } from "next/server";
 
-export async function createCategory(req: Request) {
+export async function POST(req: Request) {
   try {
     await connectToDatabase();
     const body = await req.json();
@@ -21,16 +21,11 @@ export async function createCategory(req: Request) {
       );
     }
 
-    const { categoryname, categoryslug, categorydescription, categoryimage } =
+    const { categoryName, categorySlug, categoryDescription, categoryImage } =
       validatedData.data;
 
     const existingCategory = await Category.findOne({
-      $or: [
-        { categoryname },
-        { categoryslug },
-        { categorydescription },
-        { categoryimage },
-      ],
+      $or: [{ categoryName }, { categorySlug }],
     });
 
     if (existingCategory) {
@@ -44,10 +39,10 @@ export async function createCategory(req: Request) {
     }
 
     const newCategory = await Category.create({
-      categoryname,
-      categoryslug,
-      categorydescription,
-      categoryimage,
+      categoryName,
+      categorySlug,
+      categoryDescription,
+      categoryImage,
     });
 
     console.log("Category has created: ", newCategory);
