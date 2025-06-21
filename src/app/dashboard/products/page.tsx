@@ -9,7 +9,7 @@ const Products = () => {
   const handleButton = (value?: string) => {
     const routes: Record<string, string> = {
       "add-product": PRODUCTS_ROUTES.ADD_PRODUCT,
-      "add-category": PRODUCTS_ROUTES.ADD_CATEGORY,
+      "add-category": PRODUCTS_ROUTES.CATEGORY,
     };
 
     if (!value) return;

@@ -59,3 +59,21 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    await connectToDatabase();
+    const categories = await Category.find({}).sort({ createdAt: -1 });
+    // console.log("Categories fetched: ", categories);
+    return NextResponse.json(
+      { success: true, data: categories },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error("Category API GET ERROR: ", err);
+    return NextResponse.json(
+      { success: false, error: (err as Error).message },
+      { status: 500 }
+    );
+  }
+}

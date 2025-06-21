@@ -2,8 +2,13 @@
 import UniversalForm from "@/components/forms/UniversalForm";
 import { FormFieldConfig } from "@/types/formInputs";
 import { POSTROUTES } from "@/utils/apiRoutes";
-import React, { useState } from "react";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import slugify from "slugify";
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
+import { Button } from "@/components/ui/button";
+import { PRODUCTS_ROUTES } from "@/utils/routes";
 
 const Category = () => {
   const [formValues, setFormValues] = useState<Record<string, unknown>>({
@@ -14,7 +19,7 @@ const Category = () => {
   });
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
+  const [categories, setCategories] = useState<Record<string, string>[]>([]);
   const categoryFormFields: FormFieldConfig[] = [
     {
       type: "text",
@@ -43,6 +48,35 @@ const Category = () => {
       required: true,
     },
   ];
+
+  async function fetchCategories() {
+    try {
+      const res = await fetch("/api/category");
+      const result = await res.json();
+      if (res.ok && result.data) {
+        setCategories(result.data);
+      } else {
+        console.error("Fetch error:", result.error);
+      }
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+    }
+  }
+
+  const numberedCategories = categories.map((cat, index) => ({
+    ...cat,
+    serial: index + 1,
+    categoryName: cat.categoryName,
+    categorySlug: cat.categorySlug,
+    categoryDescription: cat.categoryDescription,
+    createdAt: new Date(cat.createdAt),
+    updatedAt: new Date(cat.updatedAt),
+    categoryImage: cat.categoryImage ?? null,
+  }));
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleFieldChange = (fieldId: string, value: string) => {
     if (fieldId === "categoryName") {
@@ -92,15 +126,17 @@ const Category = () => {
 
   return (
     <div className="flex flex-col items-center justify-between w-full h-full bg-white relative">
-      <div className="flex items-center justify-start w-full px-6 py-4">
+      <div className="flex items-center justify-between w-full px-6 py-4">
         <h1 className="text-xl font-semibold text-gray-800">Categories</h1>
+        <Button
+          variant="outline"
+          className="cursor-pointer hover:bg-blue-500 hover:text-white"
+        >
+          <Link href={PRODUCTS_ROUTES.SUBCATEGORY}>Add Subcategory</Link>
+        </Button>
       </div>
-      {successMessage && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-300 font-medium">
-          {successMessage}
-        </div>
-      )}
-      <div className="flex flex-row items-center justify-between w-full ">
+
+      <div className="flex flex-row items-center w-full">
         <div className="w-full max-w-xl">
           <UniversalForm
             formTitle="Add New Category"
@@ -110,9 +146,20 @@ const Category = () => {
             onFieldChange={handleFieldChange}
             initialValues={formValues}
           />
+          {successMessage && (
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-300 font-medium">
+              {successMessage}
+            </div>
+          )}
         </div>
-        <div className="flex w-full items-center justify-center">
-          Category list
+        <div className="w-full p-4 flex flex-col items-center justify-between gap-8">
+          <div className="flex w-full items-center justify-center">
+            Category list
+          </div>
+
+          <div className="container mx-auto py-10">
+            <DataTable columns={columns} data={numberedCategories} />
+          </div>
         </div>
       </div>
     </div>
