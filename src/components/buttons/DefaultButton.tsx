@@ -5,9 +5,12 @@ import { LOGO } from "@/utils/imagePaths";
 
 const variantStyles = {
   primary: "bg-primary-button hover:bg-hover-button text-white",
-  secondary: "bg-gray-200 hover:bg-gray-300 text-black",
   tertiary: "bg-transparent hover:bg-gray-100 text-gray-800",
-  ghost: "bg-transparent hover:bg-gray-100 text-blue-600",
+  outline:
+    "border border-input hover:bg-accent bg-gray-300 font-semibold text-gray-700 hover:text-white dark:border-muted dark:hover:bg-muted dark:hover:text-muted-foreground",
+  secondary:
+    "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+  ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
 };
 
 const sizeStyles = {
@@ -58,7 +61,7 @@ const DefaultButton: React.FC<ButtonInputs> = ({
         type={type}
         onClick={() => onClick?.(value)}
         disabled={disabled || loading}
-        className={`w-full py-3 text-white text-sm cursor-pointer rounded-md bg-primary-button hover:bg-hover-button transition duration-200 
+        className={`w-full py-3 text-sm cursor-pointer rounded-md hover:bg-hover-button transition duration-200 
         ${variantStyles[variant]} ${sizeStyles[size]} ${additionalClassName}`}
         {...props}
       >

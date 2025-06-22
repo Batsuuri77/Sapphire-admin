@@ -2,6 +2,8 @@ import z from "zod";
 
 export const categorySchema = z
   .object({
+    _id: z.string().optional(),
+    editingId: z.string().optional(),
     categoryName: z.string().min(1, { message: "Category name is required" }),
     categorySlug: z
       .string()

@@ -21,6 +21,7 @@ interface UniversalFormProps {
   formCoverImage?: string;
   formCoverImageClassName?: string;
   initialValues?: Record<string, unknown>;
+  onCancel?: () => void;
 }
 
 const UniversalForm: React.FC<UniversalFormProps> = ({
@@ -37,6 +38,7 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
   formCoverImageClassName = "",
   onFieldChange,
   initialValues,
+  onCancel,
 }) => {
   const [formValues, setFormValues] = React.useState<Record<string, unknown>>(
     initialValues || {}
@@ -54,7 +56,7 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center w-full h-fit justify-center gap-8 p-8 shadow-md dark:bg-secondary-dark ${outerClassName}`}
+      className={`flex flex-col items-center w-full h-fit justify-center gap-8 p-10 mb-5 shadow-md dark:bg-secondary-dark ${outerClassName}`}
     >
       {formCoverImage && (
         <Image
@@ -269,7 +271,18 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
             ) : null}
           </div>
         ))}
-        <DefaultButton text={buttonText} type={"submit"} />
+        <div className="flex flex-col w-full justify-between gap-2 items-center">
+          <DefaultButton text={buttonText} type={"submit"} />
+          <DefaultButton
+            text={"Cancel"}
+            type={"button"}
+            variant="outline"
+            onClick={() => {
+              setFormValues(initialValues || {});
+              onCancel?.();
+            }}
+          />
+        </div>
       </form>
     </div>
   );

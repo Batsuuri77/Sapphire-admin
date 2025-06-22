@@ -21,11 +21,16 @@ export async function POST(req: Request) {
       );
     }
 
-    const { categoryName, categorySlug, categoryDescription, categoryImage } =
-      validatedData.data;
+    const {
+      _id,
+      categoryName,
+      categorySlug,
+      categoryDescription,
+      categoryImage,
+    } = validatedData.data;
 
     const existingCategory = await Category.findOne({
-      $or: [{ categoryName }, { categorySlug }],
+      $or: [{ _id, categoryName }, { categorySlug }],
     });
 
     if (existingCategory) {

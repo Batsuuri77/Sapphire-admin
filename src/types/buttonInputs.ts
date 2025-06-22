@@ -15,7 +15,7 @@ export interface ButtonInputs
   loading?: boolean;
   loadingText?: string;
   additionalClassName?: string;
-  variant?: "primary" | "secondary" | "tertiary" | "ghost";
+  variant?: "primary" | "secondary" | "tertiary" | "ghost" | "outline";
   size?: "small" | "medium" | "large";
   children?: React.ReactNode;
   onClick?: (value?: string) => void;
