@@ -80,7 +80,10 @@ export const columns = ({
             >
               Delete category
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onEdit(category)}>
+            <DropdownMenuItem
+              onClick={() => onEdit(category)}
+              className="cursor-pointer "
+            >
               Update category
             </DropdownMenuItem>
           </DropdownMenuContent>

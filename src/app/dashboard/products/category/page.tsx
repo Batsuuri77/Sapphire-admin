@@ -1,7 +1,7 @@
 "use client";
 import UniversalForm from "@/components/forms/UniversalForm";
 import { FormFieldConfig } from "@/types/formInputs";
-import { POSTROUTES } from "@/utils/apiRoutes";
+import { APIROUTES } from "@/utils/apiRoutes";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import slugify from "slugify";
@@ -53,7 +53,7 @@ const Category = () => {
 
   async function fetchCategories() {
     try {
-      const res = await fetch("/api/category");
+      const res = await fetch(APIROUTES.category);
       const result = await res.json();
       if (res.ok && result.data) {
         setCategories(result.data);
@@ -101,7 +101,7 @@ const Category = () => {
 
     try {
       const res = await fetch(
-        editingId ? `/api/category/${editingId}` : POSTROUTES.category,
+        editingId ? `${APIROUTES.category}/${editingId}` : APIROUTES.category,
         {
           method: editingId ? "PUT" : "POST",
           headers: {
@@ -140,7 +140,7 @@ const Category = () => {
 
   const onDelete = async (_id: string) => {
     try {
-      const res = await fetch(`/api/category/${_id}`, {
+      const res = await fetch(`${APIROUTES.category}/${_id}`, {
         method: "DELETE",
       });
 
@@ -192,7 +192,7 @@ const Category = () => {
       </div>
 
       <div className="flex flex-row items-center w-full justify-between gap-4">
-        <div className="w-full max-w-xl">
+        <div className="w-full max-w-xl flex-1/2">
           <UniversalForm
             formTitle={
               formValues.editingId ? "Edit Category" : "Add New Category"
@@ -218,7 +218,7 @@ const Category = () => {
             </div>
           )}
         </div>
-        <div className="w-full p-4 flex flex-col items-center justify-between gap-8">
+        <div className="w-full p-4 flex flex-1 flex-col items-center justify-between gap-8">
           <h1 className="text-xl font-semibold text-gray-800">Category list</h1>
 
           <div className="container mx-auto py-10">

@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryWithId } from "@/models/Category/Category";
+import { SubCategoryWithId } from "@/models/Category/SubCategory";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 type Props = {
-  onEdit: (category: CategoryWithId) => void;
+  onEdit: (subCategory: SubCategoryWithId) => void;
   onDelete: (_id: string) => void;
 };
 
 export const columns = ({
   onEdit,
   onDelete,
-}: Props): ColumnDef<CategoryWithId>[] => [
+}: Props): ColumnDef<SubCategoryWithId>[] => [
   {
     accessorKey: "serial",
 
@@ -36,33 +36,37 @@ export const columns = ({
     },
   },
   {
-    accessorKey: "categoryName",
+    accessorKey: "subCategoryName",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Category Name
+          Subcategory Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "categorySlug",
-    header: "Category Slug",
+    accessorKey: "subCategorySlug",
+    header: "Subcategory Slug",
   },
   {
-    accessorKey: "categoryDescription",
-    header: "Category Description",
+    accessorKey: "categoryId.categoryName",
+    header: "Parent Category",
+  },
+  {
+    accessorKey: "subCategoryDescription",
+    header: "Subcategory Description",
   },
 
   {
     id: "actions",
     header: "Actions",
     cell: ({ row }) => {
-      const category = row.original;
+      const subCategory = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -76,12 +80,15 @@ export const columns = ({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="cursor-pointer"
-              onClick={() => onDelete(category._id)}
+              onClick={() => onDelete(subCategory._id)}
             >
-              Delete category
+              Delete subcategory
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onEdit(category)}>
-              Update category
+            <DropdownMenuItem
+              onClick={() => onEdit(subCategory)}
+              className="cursor-pointer "
+            >
+              Update subcategory
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -54,9 +54,12 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
     localStorage.removeItem("formData");
   }, []);
 
+  const imageWidth = 30;
+  const imageHeight = 30;
+
   return (
     <div
-      className={`flex flex-col items-center w-full h-fit justify-center gap-8 p-10 mb-5 shadow-md dark:bg-secondary-dark ${outerClassName}`}
+      className={`flex flex-col items-center w-full  justify-center gap-8 px-10 py-5 ${outerClassName}`}
     >
       {formCoverImage && (
         <Image
@@ -185,7 +188,7 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
                       (formValues[field.id] as string[]).map((imgUrl, i) => (
                         <div
                           key={imgUrl + i}
-                          className="relative w-50 h-50 border rounded overflow-hidden"
+                          className={`relative w-${imageWidth} h-${imageHeight} border rounded overflow-hidden`}
                         >
                           <button
                             type="button"
@@ -206,14 +209,16 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
                             src={imgUrl}
                             alt={`preview`}
                             className="object-cover w-full h-full"
-                            width={50}
-                            height={50}
+                            width={imageWidth}
+                            height={imageHeight}
                           />
                         </div>
                       ))
                     : typeof formValues[field.id] === "string" &&
                       formValues[field.id] !== "" && (
-                        <div className="relative w-50 h-50 border rounded overflow-hidden">
+                        <div
+                          className={`relative w-${imageWidth} h-${imageHeight} border rounded overflow-hidden`}
+                        >
                           <button
                             type="button"
                             onClick={() => {
@@ -230,15 +235,15 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
                             src={formValues[field.id] as string}
                             alt={`preview`}
                             className="object-cover w-full h-full"
-                            width={50}
-                            height={50}
+                            width={imageWidth}
+                            height={imageHeight}
                           />
                         </div>
                       )}
 
                   <label
                     htmlFor={`upload-${field.id}`}
-                    className="flex items-center justify-center w-50 h-50 border border-dashed rounded-md cursor-pointer text-gray-500 hover:bg-gray-100"
+                    className={`flex items-center justify-center w-${imageWidth} h-${imageHeight} border border-dashed rounded-md cursor-pointer text-gray-500 hover:bg-gray-100`}
                   >
                     <PlusIcon className="w-5 h-5" />
                   </label>

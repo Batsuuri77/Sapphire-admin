@@ -33,7 +33,7 @@ export default function RootLayout({
           enableSystem={true}
           defaultTheme="system"
         >
-          <main>{children}</main>
+          <main className="h-full w-full overflow-auto">{children}</main>
         </ThemeProvider>
       </body>
     </html>

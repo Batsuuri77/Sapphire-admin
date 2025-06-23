@@ -2,11 +2,11 @@ import mongoose, { Types } from "mongoose";
 
 const SubCategorySchema = new mongoose.Schema(
   {
-    subCategoryid: { type: String, required: true, unique: true },
-    subCategoryname: { type: String, required: true },
-    subCategoryslug: { type: String, required: true, unique: true },
-    subCategoryimage: { type: String, required: false },
-    subCategorydescription: { type: String, required: true },
+    editingId: { type: String, required: false },
+    subCategoryName: { type: String, required: true },
+    subCategorySlug: { type: String, required: true, unique: true },
+    subCategoryImage: { type: String, required: false },
+    subCategoryDescription: { type: String, required: true },
     categoryId: {
       type: Types.ObjectId,
       ref: "Category",
@@ -16,14 +16,21 @@ const SubCategorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.SubCategorySchema ||
-  mongoose.model("SubCategory", SubCategorySchema, "SubCategorys");
+const SubCategory =
+  mongoose.models.SubCategory ||
+  mongoose.model("SubCategory", SubCategorySchema);
+
+export default SubCategory;
 export type SubCategory = mongoose.InferSchemaType<typeof SubCategorySchema>;
+export type SubCategoryWithId = SubCategory & {
+  _id: string;
+  categoryId: {
+    _id: string;
+    categoryName: string;
+  };
+};
 export type SubCategoryDocument = mongoose.Document<SubCategory>;
-export type CategoryModel = mongoose.Model<SubCategoryDocument> & {
-  findBySubCategoryId: (
-    subCategoryid: string
-  ) => Promise<SubCategoryDocument | null>;
+export type SubCategoryModel = mongoose.Model<SubCategoryDocument> & {
   findBySubCategoryName: (
     subCategoryname: string
   ) => Promise<SubCategoryDocument | null>;

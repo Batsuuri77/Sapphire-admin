@@ -1,6 +1,6 @@
-export const POSTROUTES = {
+export const APIROUTES = {
   adminSignup: "/api/admin",
   category: "/api/category",
-  subcategory: "/api/subcategory",
+  subCategory: "/api/subcategory",
   product: "/api/product",
 };

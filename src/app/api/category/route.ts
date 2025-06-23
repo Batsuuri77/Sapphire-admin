@@ -7,8 +7,10 @@ export async function POST(req: Request) {
   try {
     await connectToDatabase();
     const body = await req.json();
+    const { editingId, ...rest } = body;
 
-    const validatedData = categorySchema.safeParse(body);
+    const validatedData = categorySchema.safeParse(rest);
+    // console.log("Validated data: ", validatedData);
     if (!validatedData.success) {
       console.error(
         "Zod category validation error:",
@@ -21,13 +23,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const {
-      _id,
-      categoryName,
-      categorySlug,
-      categoryDescription,
-      categoryImage,
-    } = validatedData.data;
+    const { _id, categoryName, categorySlug } = validatedData.data;
 
     const existingCategory = await Category.findOne({
       $or: [{ _id, categoryName }, { categorySlug }],
@@ -43,12 +39,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const newCategory = await Category.create({
-      categoryName,
-      categorySlug,
-      categoryDescription,
-      categoryImage,
-    });
+    const newCategory = await Category.create(validatedData.data);
 
     console.log("Category has created: ", newCategory);
 

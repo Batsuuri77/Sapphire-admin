@@ -27,7 +27,7 @@ export default function DashboardLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-backgroundAuth text-foreground font-sans antialiased h-screen overflow-hidden">
-        <div className="flex h-screen w-screen">
+        <div className="flex h-full w-full">
           {/* Sidebar */}
           <SideBar
             isOpen={isSidebarOpen}
@@ -39,9 +39,12 @@ export default function DashboardLayout({
           />
 
           {/* Main area */}
-          <div className="flex flex-col flex-1">
+          <div
+            className="flex flex-col flex-1 h-full
+           w-full"
+          >
             {/* Header */}
-            <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+            <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between shrink-0">
               {/* Mobile burger */}
               <button
                 onClick={toggleSidebar}
@@ -54,7 +57,7 @@ export default function DashboardLayout({
             </header>
 
             {/* Main content */}
-            <main className="flex-1 overflow-hidden h-full w-full p-4">
+            <main className="flex-1 overflow-auto bg-white p-4">
               {children}
             </main>
           </div>
