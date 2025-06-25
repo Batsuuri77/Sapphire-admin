@@ -8,6 +8,7 @@ import slugify from "slugify";
 import { Button } from "@/components/ui/button";
 import { PRODUCTS_ROUTES } from "@/utils/routes";
 import { SubCategoryWithId } from "@/models/Category/SubCategory";
+import { map } from "zod";
 
 const AddProduct = () => {
   const [formValues, setFormValues] = useState<Record<string, unknown>>({
@@ -28,37 +29,99 @@ const AddProduct = () => {
     {
       type: "text",
       label: "Product Name",
-      id: "subCategoryName",
+      id: "productName",
       required: true,
     },
     {
       type: "text",
       label: "Slug",
-      id: "subCategorySlug",
+      id: "productSlug",
       disabled: true,
       required: true,
     },
     {
       type: "select",
-      label: "Parent Category",
-      id: "categoryId",
-      options: cat.map((cat) => ({
-        value: cat._id,
-        label: cat.categoryName,
+      label: "Subcategory",
+      id: "subCategoryId",
+      options: subCategories.map((subs) => ({
+        value: subs._id,
+        label: subs.subCategoryName,
       })),
+      required: true,
+    },
+
+    {
+      type: "text",
+      label: "Category",
+      id: "categoryId",
+      disabled: true,
       required: true,
     },
     {
       type: "image",
-      label: "Category image",
-      id: "subCategoryImage",
-      multiple: false,
+      label: "Product images",
+      id: "productImage",
+      multiple: true,
       required: true,
     },
     {
       type: "textarea",
       label: "Description",
-      id: "subCategoryDescription",
+      id: "productDescription",
+      required: true,
+    },
+    {
+      type: "number",
+      label: "Stock",
+      id: "productStock",
+      required: true,
+    },
+    {
+      type: "select",
+      label: "Province",
+      id: "productCity",
+      options: subCategories.map((subs) => ({
+        value: subs._id,
+        label: subs.subCategoryName,
+      })),
+      required: true,
+    },
+    {
+      type: "select",
+      label: "Soum",
+      id: "productDistrict",
+      options: subCategories.map((subs) => ({
+        value: subs._id,
+        label: subs.subCategoryName,
+      })),
+      required: true,
+    },
+    {
+      type: "text",
+      label: "Latitude",
+      id: "productLatitude",
+      required: true,
+    },
+    {
+      type: "text",
+      label: "Longitude",
+      id: "productLongitude",
+      required: true,
+    },
+    {
+      type: "number",
+      label: "Base Price",
+      id: "productBasePrice",
+      required: true,
+    },
+    {
+      type: "select",
+      label: "Soum",
+      id: "productDistrict",
+      options: cat.map((c) => ({
+        value: "soum",
+        label: "Select Soum",
+      })),
       required: true,
     },
   ];
@@ -123,12 +186,34 @@ const AddProduct = () => {
   });
 
   const handleFieldChange = (fieldId: string, value: string) => {
-    if (fieldId === "subCategoryName") {
+    if (fieldId === "productName") {
       const generated = slugify(value, { lower: true, strict: true });
       setFormValues((prev) => ({
         ...prev,
         [fieldId]: value,
-        subCategorySlug: generated,
+        productSlug: generated,
+      }));
+    } else if (fieldId === "subCategoryId") {
+      const selectedSubCategory = subCategories.find(
+        (sub) => sub._id === value
+      );
+      //console.log("Selected subcategory:", selectedSubCategory);
+
+      const parentCategoryName =
+        typeof selectedSubCategory?.categoryId === "object"
+          ? (
+              selectedSubCategory.categoryId as {
+                _id: string;
+                categoryName: string;
+              }
+            )?.categoryName
+          : "";
+      //console.log("Parent category name:", parentCategoryName);
+
+      setFormValues((prev) => ({
+        ...prev,
+        [fieldId]: value,
+        categoryId: parentCategoryName || "",
       }));
     } else {
       setFormValues((prev) => ({ ...prev, [fieldId]: value }));

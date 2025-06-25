@@ -54,8 +54,8 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
     localStorage.removeItem("formData");
   }, []);
 
-  const imageWidth = 30;
-  const imageHeight = 30;
+  const imageWidth = 120;
+  const imageHeight = 120;
 
   return (
     <div
@@ -101,6 +101,7 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
 
             {field.type === "text" ||
             field.type === "email" ||
+            field.type === "number" ||
             field.type === "password" ? (
               <input
                 id={field.id}
@@ -182,13 +183,17 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
               />
             ) : field.type === "image" ? (
               <div className="mt-1 w-full">
-                <div className="flex flex-wrap gap-2">
+                <div className="flex gap-2">
                   {field.multiple
                     ? Array.isArray(formValues[field.id]) &&
                       (formValues[field.id] as string[]).map((imgUrl, i) => (
                         <div
                           key={imgUrl + i}
-                          className={`relative w-${imageWidth} h-${imageHeight} border rounded overflow-hidden`}
+                          style={{
+                            width: `${imageWidth}px`,
+                            height: `${imageHeight}px`,
+                          }}
+                          className={`relative border rounded overflow-hidden`}
                         >
                           <button
                             type="button"
@@ -217,7 +222,11 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
                     : typeof formValues[field.id] === "string" &&
                       formValues[field.id] !== "" && (
                         <div
-                          className={`relative w-${imageWidth} h-${imageHeight} border rounded overflow-hidden`}
+                          className={`relative border rounded overflow-hidden`}
+                          style={{
+                            width: `${imageWidth}px`,
+                            height: `${imageHeight}px`,
+                          }}
                         >
                           <button
                             type="button"
@@ -227,7 +236,7 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
                                 [field.id]: undefined,
                               }));
                             }}
-                            className="absolute top-1 right-1 p-0.5 text-gray-500 hover:text-gray-700 transition-colors duration-200 cursor-pointer"
+                            className="absolute top-1 right-1 p-0.5 text-gray-500 w-full h-full hover:text-gray-700 transition-colors duration-200 cursor-pointer"
                           >
                             <XMarkIcon className="w-5 h-5" />
                           </button>
@@ -243,7 +252,11 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
 
                   <label
                     htmlFor={`upload-${field.id}`}
-                    className={`flex items-center justify-center w-${imageWidth} h-${imageHeight} border border-dashed rounded-md cursor-pointer text-gray-500 hover:bg-gray-100`}
+                    style={{
+                      width: `${imageWidth}px`,
+                      height: `${imageHeight}px`,
+                    }}
+                    className={`flex items-center justify-center  border border-dashed rounded-md cursor-pointer text-gray-500 hover:bg-gray-100`}
                   >
                     <PlusIcon className="w-5 h-5" />
                   </label>

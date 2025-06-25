@@ -106,6 +106,7 @@ export interface FormFieldConfig {
     | "image"
     | "select"
     | "checkbox"
+    | "number"
     | "textarea";
   textAreaRows?: number; // For textarea inputs, number of rows
   placeholder?: string;
