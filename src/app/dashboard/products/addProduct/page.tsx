@@ -9,15 +9,33 @@ import { Button } from "@/components/ui/button";
 import { PRODUCTS_ROUTES } from "@/utils/routes";
 import { SubCategoryWithId } from "@/models/Category/SubCategory";
 import { map } from "zod";
+import provinces from "@/data/city.json";
+import soums from "@/data/district.json";
 
 const AddProduct = () => {
   const [formValues, setFormValues] = useState<Record<string, unknown>>({
     editingId: null,
-    subCategoryName: "",
-    subCategorySlug: "",
-    subCategoryImage: "",
-    subCategoryDescription: "",
+    productName: "",
+    productSlug: "",
+    subCategoryId: "",
     categoryId: "",
+    productImage: [],
+    productDescription: "",
+    productStock: 0,
+    productCity: "",
+    productDistrict: "",
+    productBasePrice: 0,
+    productOptions: {
+      sizes: [],
+      materials: [],
+      frameOptions: [],
+    },
+    ratings: 0,
+    reviews: [],
+    isActive: true,
+    isSale: false,
+    discount: 0,
+    salePrice: 0,
   });
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -25,6 +43,10 @@ const AddProduct = () => {
     []
   );
   const [cat, setCat] = useState<Record<string, string>[]>([]);
+
+  const [provincesCode, setProvincesCode] = useState<number | null>(null);
+  const [availableSoums, setAvailableSoums] = useState<typeof soums>([]);
+
   const productFormFields: FormFieldConfig[] = [
     {
       type: "text",
@@ -78,11 +100,11 @@ const AddProduct = () => {
     },
     {
       type: "select",
-      label: "Province",
+      label: "City",
       id: "productCity",
-      options: subCategories.map((subs) => ({
-        value: subs._id,
-        label: subs.subCategoryName,
+      options: provinces.map((prov) => ({
+        value: String(prov.code),
+        label: prov.name,
       })),
       required: true,
     },
@@ -90,22 +112,10 @@ const AddProduct = () => {
       type: "select",
       label: "Soum",
       id: "productDistrict",
-      options: subCategories.map((subs) => ({
-        value: subs._id,
-        label: subs.subCategoryName,
+      options: availableSoums.map((soum) => ({
+        value: String(soum.code),
+        label: soum.name,
       })),
-      required: true,
-    },
-    {
-      type: "text",
-      label: "Latitude",
-      id: "productLatitude",
-      required: true,
-    },
-    {
-      type: "text",
-      label: "Longitude",
-      id: "productLongitude",
       required: true,
     },
     {
@@ -117,14 +127,30 @@ const AddProduct = () => {
     {
       type: "select",
       label: "Soum",
-      id: "productDistrict",
-      options: cat.map((c) => ({
-        value: "soum",
-        label: "Select Soum",
-      })),
+      id: "productOption",
       required: true,
     },
+    { id: "isActive", label: "Active", type: "checkbox" },
+    { id: "isSale", label: "On Sale?", type: "checkbox" },
+    { id: "discount", label: "Discount (%)", type: "text" },
+    { id: "salePrice", label: "Sale Price", type: "text", disabled: true },
   ];
+
+  const handleProvincesChange = (selectedProvincesCode: string) => {
+    const code = parseInt(selectedProvincesCode, 10);
+    setProvincesCode(code);
+
+    // Filter soums where parent === selected province code
+    const filteredSoums = soums.filter((soum) => soum.parent === code);
+    setAvailableSoums(filteredSoums);
+
+    // Update form value
+    setFormValues((prev) => ({
+      ...prev,
+      productCity: selectedProvincesCode,
+      productDistrict: "",
+    }));
+  };
 
   async function fetchCategories() {
     try {
@@ -162,28 +188,28 @@ const AddProduct = () => {
     fetchSubCategories();
   }, []);
 
-  const numberedSubCategories = subCategories.map((subs, index) => {
-    const category =
-      typeof subs.categoryId === "object" && subs.categoryId !== null
-        ? (subs.categoryId as { _id: string; categoryName: string })
-        : null;
-    return {
-      ...subs,
-      _id: subs._id,
-      serial: index + 1,
-      subCategoryName: subs.subCategoryName,
-      subCategorySlug: subs.subCategorySlug,
-      subCategoryDescription: subs.subCategoryDescription,
-      categoryId: {
-        _id: subs.categoryId,
-        categoryName: category?.categoryName || "Unknown",
-      },
-      createdAt: new Date(subs.createdAt),
-      updatedAt: new Date(subs.updatedAt),
-      subCategoryImage: subs.subCategoryImage ?? null,
-      editingId: subs.editingId ?? "",
-    };
-  });
+  // const numberedSubCategories = subCategories.map((subs, index) => {
+  //   const category =
+  //     typeof subs.categoryId === "object" && subs.categoryId !== null
+  //       ? (subs.categoryId as { _id: string; categoryName: string })
+  //       : null;
+  //   return {
+  //     ...subs,
+  //     _id: subs._id,
+  //     serial: index + 1,
+  //     subCategoryName: subs.subCategoryName,
+  //     subCategorySlug: subs.subCategorySlug,
+  //     subCategoryDescription: subs.subCategoryDescription,
+  //     categoryId: {
+  //       _id: subs.categoryId,
+  //       categoryName: category?.categoryName || "Unknown",
+  //     },
+  //     createdAt: new Date(subs.createdAt),
+  //     updatedAt: new Date(subs.updatedAt),
+  //     subCategoryImage: subs.subCategoryImage ?? null,
+  //     editingId: subs.editingId ?? "",
+  //   };
+  // });
 
   const handleFieldChange = (fieldId: string, value: string) => {
     if (fieldId === "productName") {
@@ -215,6 +241,10 @@ const AddProduct = () => {
         [fieldId]: value,
         categoryId: parentCategoryName || "",
       }));
+    } else if (fieldId === "productCity") {
+      handleProvincesChange(value);
+    } else if (fieldId === "productBasePrice") {
+      handleBasePriceChange(value);
     } else {
       setFormValues((prev) => ({ ...prev, [fieldId]: value }));
     }

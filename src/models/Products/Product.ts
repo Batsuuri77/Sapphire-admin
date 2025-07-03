@@ -9,8 +9,6 @@ const ProductSchema = new mongoose.Schema(
     productStock: { type: Number, required: true },
     productCity: { type: String, required: true },
     productDistrict: { type: String, required: true },
-    productLatitude: { type: String, required: true },
-    productLongitude: { type: String, required: true },
     productBasePrice: { type: Number, required: true },
 
     productOptions: {

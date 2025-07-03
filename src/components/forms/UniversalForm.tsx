@@ -103,22 +103,65 @@ const UniversalForm: React.FC<UniversalFormProps> = ({
             field.type === "email" ||
             field.type === "number" ||
             field.type === "password" ? (
-              <input
-                id={field.id}
-                type={field.type}
-                placeholder={field.placeholder}
-                required={field.required}
-                disabled={field.disabled}
-                value={(formValues[field.id] as string) || ""}
-                className={`mt-1 py-2 px-3 w-full border rounded-md ${
-                  field.className || ""
-                }`}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setFormValues((prev) => ({ ...prev, [field.id]: val }));
-                  onFieldChange?.(field.id, val);
-                }}
-              />
+              field.id == "productBasePrice" ? (
+                <div className="flex rounded-md border overflow-hidden">
+                  <input
+                    id={field.id}
+                    type="text"
+                    placeholder={field.placeholder}
+                    required={field.required}
+                    disabled={field.disabled}
+                    value={(formValues[field.id] as string) || ""}
+                    className={`py-2 px-3 w-full border-0 focus:ring-0 focus:outline-none ${
+                      field.className || ""
+                    }`}
+                    onChange={(e) => {
+                      // Remove all commas and non-digit characters
+                      const raw = e.target.value
+                        .replace(/,/g, "")
+                        .replace(/[^\d]/g, "");
+
+                      if (raw === "") {
+                        setFormValues((prev) => ({ ...prev, [field.id]: "" }));
+                        onFieldChange?.(field.id, "");
+                        return;
+                      }
+
+                      // Format with commas
+                      const formatted = raw.replace(
+                        /\B(?=(\d{3})+(?!\d))/g,
+                        ","
+                      );
+
+                      setFormValues((prev) => ({
+                        ...prev,
+                        [field.id]: formatted,
+                      }));
+                      onFieldChange?.(field.id, raw); // Send unformatted raw number to parent if needed
+                    }}
+                  />
+                  <span className="px-3 text-gray-500 bg-gray-50 flex items-center">
+                    ₮
+                  </span>
+                </div>
+              ) : (
+                <input
+                  id={field.id}
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  required={field.required}
+                  disabled={field.disabled}
+                  value={(formValues[field.id] as string) || ""}
+                  className={`mt-1 py-2 px-3 w-full border rounded-md ${
+                    field.className || ""
+                  }`}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setFormValues((prev) => ({ ...prev, [field.id]: val }));
+                    onFieldChange?.(field.id, val);
+                  }}
+                />
+              )
             ) : field.type === "select" ? (
               <select
                 id={field.id}
